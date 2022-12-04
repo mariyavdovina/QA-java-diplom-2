@@ -33,7 +33,7 @@ public class UserModificationTest {
     @Test
     public void modifyWithoutAuthNotPossible(){
         ValidatableResponse responseCreate = userClient.create(user);
-        //responseCreate.assertThat().statusCode(SC_OK);
+        responseCreate.assertThat().statusCode(SC_OK);
         ValidatableResponse responseLogin = userClient.login(Credentials.from(user));
         responseLogin.assertThat().statusCode(SC_OK);
         accessToken = responseLogin.extract().path("accessToken").toString().substring(6).trim();

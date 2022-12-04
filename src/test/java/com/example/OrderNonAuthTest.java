@@ -4,6 +4,7 @@ import com.example.clients.OrderClient;
 import com.example.models.Order;
 import com.example.providers.OrderProvider;
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,10 @@ public class OrderNonAuthTest {
     @Before
     public void setUp() {
         orderClient = new OrderClient();
+    }
+    @After
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(300);
     }
 
     public OrderNonAuthTest(Order order, int statusCode) {

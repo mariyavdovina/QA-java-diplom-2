@@ -38,7 +38,7 @@ public class UserLoginNegativeTest {
     public static Object[][] getTestData(){
         return new Object[][]{
                 {CredentialsProvider.getWithInvalidPassword(), SC_UNAUTHORIZED, "email or password are incorrect"},
-                //{CredentialsProvider.getWithInvalidLogin(), SC_UNAUTHORIZED, "email or password are incorrect"},
+                {CredentialsProvider.getWithInvalidLogin(), SC_UNAUTHORIZED, "email or password are incorrect"},
                 {CredentialsProvider.getWithEmptyCreds(), SC_UNAUTHORIZED, "email or password are incorrect"},
         };
     }

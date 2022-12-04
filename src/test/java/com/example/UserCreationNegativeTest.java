@@ -41,8 +41,8 @@ public class UserCreationNegativeTest {
         //List.of("")
         return new Object[][]{
                 {UserProvider.getWithoutEmail(), SC_FORBIDDEN, "Email, password and name are required fields"},
-                //{UserProvider.getWithoutPassword(), SC_FORBIDDEN, "Email, password and name are required fields"},
-                //{UserProvider.getWithoutName(), SC_FORBIDDEN, "Email, password and name are required fields"},
+                {UserProvider.getWithoutPassword(), SC_FORBIDDEN, "Email, password and name are required fields"},
+                {UserProvider.getWithoutName(), SC_FORBIDDEN, "Email, password and name are required fields"},
                 {UserProvider.getEmpty(), SC_FORBIDDEN, "Email, password and name are required fields"},
                 {new User(CredentialsProvider.getDefault().getEmail(), CredentialsProvider.getDefault().getPassword(), "Bob"), SC_FORBIDDEN, "User already exists"}
         };
