@@ -1,9 +1,10 @@
-package negative;
+package com.example;
 
 import com.example.clients.UserClient;
 import com.example.models.Credentials;
 import com.example.providers.CredentialsProvider;
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,10 @@ public class UserLoginNegativeTest {
     public void setUp() {
         userClient = new UserClient();
     }
-
+    @After
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(300);
+    }
     public UserLoginNegativeTest(Credentials credentials, int statusCode, String message) {
         this.credentials = credentials;
         this.statusCode = statusCode;

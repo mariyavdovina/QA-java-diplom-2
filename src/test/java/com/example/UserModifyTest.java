@@ -1,4 +1,4 @@
-package usermodification;
+package com.example;
 
 import com.example.clients.UserClient;
 import com.example.models.Credentials;
@@ -28,8 +28,9 @@ public class UserModifyTest {
     public void setUp() {
     }
     @After
-    public void cleanUp(){
+    public void cleanUp() throws InterruptedException {
         new UserClient().delete(token);
+        Thread.sleep(300);
     }
 
     public UserModifyTest(String accessToken, User newUser,int statusCode,boolean isSuccess, String message){

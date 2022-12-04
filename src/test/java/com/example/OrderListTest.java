@@ -1,8 +1,9 @@
-package orders;
+package com.example;
 
 import com.example.clients.OrderClient;
 import io.restassured.response.ValidatableResponse;
 import jdk.jfr.Description;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +18,10 @@ public class OrderListTest {
     public void setUp()  {
         orderClient = new OrderClient();
     }
-
+    @After
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(300);
+    }
     @Test
     @Description("Checking that list of orders returns for authorized user")
     public void getListOfOrdersAuth(){

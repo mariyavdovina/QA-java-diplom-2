@@ -1,9 +1,10 @@
-package orders;
+package com.example;
 
 import com.example.clients.OrderClient;
 import com.example.models.Order;
 import com.example.providers.OrderProvider;
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,7 @@ import static org.apache.http.HttpStatus.*;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class OrderNonAuthTest {
+public class OrderAuthTest {
     private Order order;
     private int statusCode;
     private OrderClient orderClient;
@@ -23,9 +24,13 @@ public class OrderNonAuthTest {
         orderClient = new OrderClient();
     }
 
-    public OrderNonAuthTest(Order order, int statusCode) {
+    public OrderAuthTest(Order order, int statusCode) {
         this.order = order;
         this.statusCode = statusCode;
+    }
+    @After
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(300);
     }
 
     @Parameterized.Parameters
@@ -39,10 +44,9 @@ public class OrderNonAuthTest {
     }
 
     @Test
-    public void orderCanBeCreated() {
-        ValidatableResponse responseCreate = orderClient.createWithoutAuth(order);
-        int actualCode = responseCreate.extract().statusCode();
-        assertEquals(statusCode, actualCode);
+    public void orderCanBeCreatedAuth() {
+        ValidatableResponse responseCreateAuth = orderClient.createWithAuth(order);
+        int actualCodeAuth = responseCreateAuth.extract().statusCode();
+        assertEquals(statusCode,actualCodeAuth);
     }
-
 }

@@ -1,4 +1,4 @@
-package usermodification;
+package com.example;
 
 import com.example.clients.UserClient;
 import com.example.models.Credentials;
@@ -6,6 +6,7 @@ import com.example.models.User;
 import com.example.providers.CredentialsProvider;
 import com.example.providers.UserProvider;
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,10 +26,14 @@ public class UserModificationTest {
         user = UserProvider.getDefault();
         credentials = CredentialsProvider.getDefault();
     }
+    @After
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(300);
+    }
     @Test
     public void modifyWithoutAuthNotPossible(){
         ValidatableResponse responseCreate = userClient.create(user);
-        responseCreate.assertThat().statusCode(SC_OK);
+        //responseCreate.assertThat().statusCode(SC_OK);
         ValidatableResponse responseLogin = userClient.login(Credentials.from(user));
         responseLogin.assertThat().statusCode(SC_OK);
         accessToken = responseLogin.extract().path("accessToken").toString().substring(6).trim();

@@ -1,4 +1,4 @@
-package orders;
+package com.example;
 
 import com.example.clients.OrderClient;
 import com.example.models.Order;
@@ -13,7 +13,7 @@ import static org.apache.http.HttpStatus.*;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class OrderAuthTest {
+public class OrderNonAuthTest {
     private Order order;
     private int statusCode;
     private OrderClient orderClient;
@@ -23,7 +23,7 @@ public class OrderAuthTest {
         orderClient = new OrderClient();
     }
 
-    public OrderAuthTest(Order order, int statusCode) {
+    public OrderNonAuthTest(Order order, int statusCode) {
         this.order = order;
         this.statusCode = statusCode;
     }
@@ -39,9 +39,10 @@ public class OrderAuthTest {
     }
 
     @Test
-    public void orderCanBeCreatedAuth() {
-        ValidatableResponse responseCreateAuth = orderClient.createWithAuth(order);
-        int actualCodeAuth = responseCreateAuth.extract().statusCode();
-        assertEquals(statusCode,actualCodeAuth);
+    public void orderCanBeCreated() {
+        ValidatableResponse responseCreate = orderClient.createWithoutAuth(order);
+        int actualCode = responseCreate.extract().statusCode();
+        assertEquals(statusCode, actualCode);
     }
+
 }
