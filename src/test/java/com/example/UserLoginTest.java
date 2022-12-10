@@ -17,13 +17,11 @@ public class UserLoginTest {
     private UserClient userClient;
     private User user;
     private String accessToken;
-    private Credentials credentials;
 
     @Before
     public void setUp(){
         userClient = new UserClient();
-        user = UserProvider.getDefault();
-        credentials = CredentialsProvider.getDefault();
+        user = UserProvider.getRandom();
     }
     @After
     public void tearDown() throws InterruptedException {
@@ -32,7 +30,9 @@ public class UserLoginTest {
 
     @Test
     public void userCanLogin(){
-        ValidatableResponse responseLogin = userClient.login(credentials);
+        ValidatableResponse responseCreate = userClient.create(user);
+        responseCreate.assertThat().statusCode(SC_OK);
+        ValidatableResponse responseLogin = userClient.login(Credentials.from(user));
         int statusCode = responseLogin.extract().statusCode();
         accessToken = responseLogin.extract().path("accessToken").toString().substring(6).trim();
         Assert.assertEquals(SC_OK, statusCode);

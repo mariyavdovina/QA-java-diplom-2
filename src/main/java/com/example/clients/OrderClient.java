@@ -55,8 +55,4 @@ public class OrderClient extends Client {
                 .get(PATH)
                 .then();
     }
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site/";
-    }
 }

@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.clients.UserClient;
+import com.example.models.Credentials;
 import com.example.models.User;
 import com.example.providers.CredentialsProvider;
 import com.example.providers.UserProvider;
@@ -12,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
+import static org.apache.http.HttpStatus.SC_OK;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
@@ -20,6 +22,7 @@ public class UserCreationNegativeTest {
     private String message;
     private int statusCode;
     private UserClient userClient;
+    private String accessToken;
 
     @Before
     public void setUp() {
@@ -34,7 +37,6 @@ public class UserCreationNegativeTest {
         this.statusCode = statusCode;
         this.message = message;
     }
-
     //test data
     @Parameterized.Parameters
     public static Object[][] getTestData() {
@@ -44,7 +46,7 @@ public class UserCreationNegativeTest {
                 {UserProvider.getWithoutPassword(), SC_FORBIDDEN, "Email, password and name are required fields"},
                 {UserProvider.getWithoutName(), SC_FORBIDDEN, "Email, password and name are required fields"},
                 {UserProvider.getEmpty(), SC_FORBIDDEN, "Email, password and name are required fields"},
-                {new User(CredentialsProvider.getDefault().getEmail(), CredentialsProvider.getDefault().getPassword(), "Bob"), SC_FORBIDDEN, "User already exists"}
+                //{new User(CredentialsProvider.getDefault().getEmail(), CredentialsProvider.getDefault().getPassword(), "Bob"), SC_FORBIDDEN, "User already exists"}
         };
     }
 
@@ -55,6 +57,9 @@ public class UserCreationNegativeTest {
         int actualStatusCode = responseCreate.extract().statusCode();
         assertEquals(statusCode, actualStatusCode);
         assertEquals(message, actualMessage);
+        if (actualStatusCode == SC_OK){
+            accessToken = responseCreate.extract().path("accessToken").toString().substring(6).trim();
+            userClient.delete(accessToken);
+        }
     }
-
 }

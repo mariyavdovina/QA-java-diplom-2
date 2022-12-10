@@ -18,13 +18,11 @@ public class UserModificationTest {
     private UserClient userClient;
     private User user;
     private String accessToken;
-    private Credentials credentials;
 
     @Before
     public void setUp(){
         userClient = new UserClient();
-        user = UserProvider.getDefault();
-        credentials = CredentialsProvider.getDefault();
+        user = UserProvider.getRandom();
     }
     @After
     public void tearDown() throws InterruptedException {

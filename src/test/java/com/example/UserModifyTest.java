@@ -43,7 +43,11 @@ public class UserModifyTest {
     @Parameterized.Parameters
     public static Object[][] getTestData(){
         UserClient userClient = new UserClient();
-        User user = UserProvider.getDefault();
+        //User user = UserProvider.getDefault();
+        User user = UserProvider.getRandom();
+        String login = user.getEmail();
+        String password = user.getPassword();
+        String name = user.getName();
         ValidatableResponse responseCreate = userClient.create(user);
         responseCreate.assertThat().statusCode(SC_OK);
         ValidatableResponse responseLogin = userClient.login(Credentials.from(user));
@@ -52,7 +56,7 @@ public class UserModifyTest {
 
         return new Object[][]{
                 {token, new User(user.getEmail()+"1",user.getPassword()+"1", user.getName()+"1" ),SC_OK,true,null},
-                {token, new User(CredentialsProvider.getDefault().getEmail(),user.getPassword()+"1", user.getName()+"1" ),SC_FORBIDDEN,false,"User with such email already exists"},
+                {token, new User(login,password+"1", name+"1" ),SC_FORBIDDEN,false,"User with such email already exists"},
                 {"token", new User(user.getEmail()+"1",user.getPassword()+"1", user.getName()+"1" ),SC_FORBIDDEN,false,"jwt malformed"}
            };
     }
@@ -63,5 +67,6 @@ public class UserModifyTest {
         Assert.assertEquals(statusCode, responseModify.extract().statusCode());
         Assert.assertEquals(isSuccess, responseModify.extract().path("success"));
         new UserClient().delete(accessToken);
+
     }
 }
