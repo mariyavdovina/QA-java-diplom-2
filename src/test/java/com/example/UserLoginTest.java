@@ -36,6 +36,7 @@ public class UserLoginTest {
         int statusCode = responseLogin.extract().statusCode();
         accessToken = responseLogin.extract().path("accessToken").toString().substring(6).trim();
         Assert.assertEquals(SC_OK, statusCode);
+        userClient.delete(accessToken);
     }
 
 }

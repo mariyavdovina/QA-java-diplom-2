@@ -30,7 +30,7 @@ public class UserModifyTest {
     @After
     public void cleanUp() throws InterruptedException {
         new UserClient().delete(token);
-        Thread.sleep(300);
+        Thread.sleep(400);
     }
 
     public UserModifyTest(String accessToken, User newUser,int statusCode,boolean isSuccess, String message){

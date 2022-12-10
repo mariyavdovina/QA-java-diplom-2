@@ -24,8 +24,8 @@ public class UserDuplicationTest {
     }
     @After
     public void tearDown() throws InterruptedException {
-        Thread.sleep(300); //In order to avoid 429 Error (too many requests)
         userClientPredefined.delete(preToken);
+        Thread.sleep(300); //In order to avoid 429 Error (too many requests)
     }
     @Test
     public void userCanNotBeDuplicated(){
