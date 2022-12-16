@@ -4,6 +4,19 @@ public class Credentials {
     private String email;
     private String password;
 
+    public Credentials(String login, String password) {
+        this.email = login;
+        this.password = password;
+    }
+
+    public Credentials() {
+
+    }
+
+    public static Credentials from(User courier) {
+        return new Credentials(courier.getEmail(), courier.getPassword());
+    }
+
     public String getEmail() {
         return email;
     }
@@ -18,18 +31,5 @@ public class Credentials {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Credentials(String login, String password) {
-        this.email = login;
-        this.password = password;
-    }
-
-    public Credentials() {
-
-    }
-
-    public static Credentials from(User courier) {
-        return new Credentials(courier.getEmail(), courier.getPassword());
     }
 }

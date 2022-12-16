@@ -3,17 +3,15 @@ package com.example.clients;
 import com.example.models.Order;
 import com.example.providers.CredentialsProvider;
 import io.qameta.allure.Step;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import org.junit.Before;
 
 import static io.restassured.RestAssured.given;
 
 public class OrderClient extends Client {
     private static final String PATH = "api/orders/";
-    private UserClient userClient = new UserClient();
-    private ValidatableResponse responseLogin = userClient.login(CredentialsProvider.getDefault());
-    private String accessToken = responseLogin.extract().path("accessToken").toString().substring(6).trim();
+    private final UserClient userClient = new UserClient();
+    private final ValidatableResponse responseLogin = userClient.login(CredentialsProvider.getDefault());
+    private final String accessToken = responseLogin.extract().path("accessToken").toString().substring(6).trim();
 
     @Step("Order creation without token")
     public ValidatableResponse createWithoutAuth(Order order) {
@@ -25,6 +23,7 @@ public class OrderClient extends Client {
                 .then();
 
     }
+
     @Step("Order creation with token")
     public ValidatableResponse createWithAuth(Order order) {
         return given()
@@ -45,6 +44,7 @@ public class OrderClient extends Client {
                 .get(PATH)
                 .then();
     }
+
     @Step("List of orders with token")
     public ValidatableResponse listOfOrdersAuth() {
         return given()

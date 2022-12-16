@@ -2,15 +2,13 @@ package com.example;
 
 import com.example.clients.OrderClient;
 import io.restassured.response.ValidatableResponse;
-import jdk.jfr.Description;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 public class OrderListTest {
     private OrderClient orderClient;
@@ -23,18 +21,18 @@ public class OrderListTest {
         Thread.sleep(300);
     }
     @Test
-    @Description("Checking that list of orders returns for authorized user")
+    //Checking that list of orders returns for authorized user
     public void getListOfOrdersAuth(){
         ValidatableResponse responseCreateAuth = orderClient.listOfOrdersAuth();
         responseCreateAuth.assertThat().statusCode(SC_OK);
-        assertNotNull(responseCreateAuth.extract().path("orders"));
+        assertTrue(responseCreateAuth.extract().path("success"));
+        responseCreateAuth.assertThat().body("total", instanceOf(Integer.class));
     }
     @Test
-    @Description("Checking that list of orders returns without being authorized")
+    //Checking that list of orders returns without being authorized
     public void getListOfOrders(){
         ValidatableResponse responseCreateAuth = orderClient.listOfOrdersNonAuth();
         responseCreateAuth.assertThat().statusCode(SC_UNAUTHORIZED);
         assertNull(responseCreateAuth.extract().path("orders"));
     }
-
 }

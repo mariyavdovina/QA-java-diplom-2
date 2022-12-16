@@ -8,7 +8,7 @@ import java.util.List;
 public class OrderProvider {
     @Step("Default order")
     public static Order getDefault() {
-        return new Order(List.of("61c0c5a71d1f82001bdaaa73","61c0c5a71d1f82001bdaaa75"));
+        return new Order(List.of("61c0c5a71d1f82001bdaaa73", "61c0c5a71d1f82001bdaaa75"));
     }
 
     @Step("Empty order")

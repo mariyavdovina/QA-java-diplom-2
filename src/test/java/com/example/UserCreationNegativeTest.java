@@ -21,8 +21,10 @@ public class UserCreationNegativeTest {
     private User user;
     private String message;
     private int statusCode;
+    private int actualStatusCode;
     private UserClient userClient;
     private String accessToken;
+    private ValidatableResponse responseCreate;
 
     @Before
     public void setUp() {
@@ -30,6 +32,10 @@ public class UserCreationNegativeTest {
     }
     @After
     public void tearDown() throws InterruptedException {
+        if (actualStatusCode == SC_OK){
+            accessToken = responseCreate.extract().path("accessToken").toString().substring(6).trim();
+            userClient.delete(accessToken);
+        }
         Thread.sleep(300); //In order to avoid 429 Error (too many requests)
     }
     public UserCreationNegativeTest(User user, int statusCode, String message) {
@@ -46,20 +52,16 @@ public class UserCreationNegativeTest {
                 {UserProvider.getWithoutPassword(), SC_FORBIDDEN, "Email, password and name are required fields"},
                 {UserProvider.getWithoutName(), SC_FORBIDDEN, "Email, password and name are required fields"},
                 {UserProvider.getEmpty(), SC_FORBIDDEN, "Email, password and name are required fields"},
-                //{new User(CredentialsProvider.getDefault().getEmail(), CredentialsProvider.getDefault().getPassword(), "Bob"), SC_FORBIDDEN, "User already exists"}
+                {new User(CredentialsProvider.getDefault().getEmail(), CredentialsProvider.getDefault().getPassword(), "Bob"), SC_FORBIDDEN, "User already exists"}
         };
     }
 
     @Test
     public void userCanBeCreated(){
-        ValidatableResponse responseCreate = userClient.create(user);
+        responseCreate = userClient.create(user);
         String actualMessage = responseCreate.extract().path("message").toString();
-        int actualStatusCode = responseCreate.extract().statusCode();
+        actualStatusCode = responseCreate.extract().statusCode();
         assertEquals(statusCode, actualStatusCode);
         assertEquals(message, actualMessage);
-        if (actualStatusCode == SC_OK){
-            accessToken = responseCreate.extract().path("accessToken").toString().substring(6).trim();
-            userClient.delete(accessToken);
-        }
     }
 }
